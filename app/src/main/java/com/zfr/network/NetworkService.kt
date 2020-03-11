@@ -63,7 +63,7 @@ class NetworkService : IntentService("NetworkService") {
      * parameters.
      */
     private fun handleActionHttpRequest(ip_addr: String, port: Int, sslpinning_enabled: Boolean, http2_enabled: Boolean, pendingIntent: PendingIntent) {
-        val api = ControllerApi().getHttpApi(ip_addr, port, sslpinning_enabled, http2_enabled)
+        val api = ControllerApi(applicationContext).getHttpApi(ip_addr, port, sslpinning_enabled, http2_enabled)
         var output: String
 
         api.request().enqueue(object : Callback<ResponseBody> {
@@ -92,7 +92,7 @@ class NetworkService : IntentService("NetworkService") {
      * parameters.
      */
     private fun handleActionHttpRobots(ip_addr: String, port: Int, sslpinning_enabled: Boolean, http2_enabled: Boolean, pendingIntent: PendingIntent) {
-        val api = ControllerApi().getHttpSSLPinningApi("publicobject.com", 443, sslpinning_enabled, http2_enabled)
+        val api = ControllerApi(applicationContext).getHttpSSLPinningApi("publicobject.com", 443, sslpinning_enabled, http2_enabled)
         var output: String
 
         api.robots().enqueue(object : Callback<ResponseBody> {

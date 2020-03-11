@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             val intent_service = Intent(this, NetworkService::class.java).apply {
                 action = NetworkService.ACTION_HTTP_REQUEST
                 putExtra(NetworkService.EXTRA_IP_ADDR, ip_textinput.text.toString())
-                putExtra(NetworkService.EXTRA_PORT, port_textinput.text.toString())
+                putExtra(NetworkService.EXTRA_PORT, port_textinput.text.toString().toInt())
                 putExtra(NetworkService.EXTRA_SSLPINNING, sslpinning_enabled.isChecked)
                 putExtra(NetworkService.EXTRA_HTTP2, http2_enabled.isChecked)
                 putExtra(NetworkService.EXTRA_PENDING_INTENT, pendingIntent)
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             val intent_service = Intent(this, NetworkService::class.java).apply {
                 action = NetworkService.ACTION_HTTP_ROBOTS
                 putExtra(NetworkService.EXTRA_IP_ADDR, ip_textinput.text.toString())
-                putExtra(NetworkService.EXTRA_PORT, port_textinput.text.toString())
+                putExtra(NetworkService.EXTRA_PORT, port_textinput.text.toString().toInt())
                 putExtra(NetworkService.EXTRA_SSLPINNING, sslpinning_enabled.isChecked)
                 putExtra(NetworkService.EXTRA_HTTP2, http2_enabled.isChecked)
                 putExtra(NetworkService.EXTRA_PENDING_INTENT, pendingIntent)
