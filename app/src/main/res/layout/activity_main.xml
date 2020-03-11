@@ -69,6 +69,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_httprequest" />
 
+    <Button
+        android:id="@+id/button_httprobots"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Robots.txt Request"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_websocket" />
+
+
+
     <TextView
         android:id="@+id/textView_output"
         android:layout_width="360dp"

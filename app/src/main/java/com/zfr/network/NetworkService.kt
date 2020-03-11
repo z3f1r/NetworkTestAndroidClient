@@ -26,6 +26,7 @@ class NetworkService : IntentService("NetworkService") {
         // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
         const val ACTION_HTTP_REQUEST = "com.zfr.network.action.HTTP_REQUEST"
         const val ACTION_WS_REQUEST = "com.zfr.network.action.WS_REQUEST"
+        const val ACTION_HTTP_ROBOTS = "com.zfr.network.action.HTTP_ROBOTS"
 
         // TODO: Rename parameters
         const val EXTRA_IP_ADDR = "com.zfr.network.extra.IP_ADDR"
@@ -33,6 +34,7 @@ class NetworkService : IntentService("NetworkService") {
         const val EXTRA_SSLPINNING = "com.zfr.network.extra.SSLPINNING_ENABLED"
         const val EXTRA_HTTP2 = "com.zfr.network.extra.HTTP2_ENABLED"
         const val EXTRA_PENDING_INTENT = "com.zfr.network.extra.PENDING_INTENT"
+
 
     }
 
@@ -49,6 +51,9 @@ class NetworkService : IntentService("NetworkService") {
             }
             ACTION_WS_REQUEST -> {
                 handleActionWebSocketsRequest(ip_addr!!, port!!, sslpinning_enabled!!, http2_enabled!!, pending_intent!!)
+            }
+            ACTION_HTTP_ROBOTS -> {
+                handleActionHttpRobots(ip_addr!!, port!!, sslpinning_enabled!!, http2_enabled!!, pending_intent!!)
             }
         }
     }
@@ -70,7 +75,7 @@ class NetworkService : IntentService("NetworkService") {
                 else {
                     output = "Something wrong.. response code - ${response.code()}"
                 }
-                
+
                 pendingIntent.send(applicationContext, 0, Intent().putExtra(MainActivity.PARAM_RESULT, output))
             }
 
@@ -82,6 +87,37 @@ class NetworkService : IntentService("NetworkService") {
         })
 
     }
+    /**
+     * Handle action Foo in the provided background thread with the provided
+     * parameters.
+     */
+    private fun handleActionHttpRobots(ip_addr: String, port: Int, sslpinning_enabled: Boolean, http2_enabled: Boolean, pendingIntent: PendingIntent) {
+        val api = ControllerApi().getHttpSSLPinningApi("publicobject.com", 443, sslpinning_enabled, http2_enabled)
+        var output: String
+
+        api.robots().enqueue(object : Callback<ResponseBody> {
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == 200) {
+                    output = response.body()!!.string()
+                }
+                else {
+                    output = "Something wrong.. response code - ${response.code()}"
+                }
+
+                pendingIntent.send(applicationContext, 0, Intent().putExtra(MainActivity.PARAM_RESULT, output))
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                output = "Something wrong.. Message: ${t.message}"
+                pendingIntent.send(applicationContext, 0, Intent().putExtra(MainActivity.PARAM_RESULT, output))
+            }
+
+        })
+
+    }
+
+
 
     /**
      * Handle action Baz in the provided background thread with the provided

@@ -16,4 +16,7 @@ interface HttpApi {
 
     @GET("/api/orders")
     fun request(): Call<ResponseBody>
+
+    @GET("/robots.txt")
+    fun robots(): Call<ResponseBody>
 }
